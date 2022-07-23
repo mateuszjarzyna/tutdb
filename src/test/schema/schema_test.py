@@ -15,7 +15,7 @@ class SchemaTest(unittest.TestCase):
 
         # expect
         self.assertEqual(table.name, "employee")
-        self.assertEqual(len(table.columns), 0)
+        self.assertEqual(len(table.get_columns()), 0)
 
     def test_add_columns(self):
         # given
@@ -26,7 +26,7 @@ class SchemaTest(unittest.TestCase):
         table.add_column("age", ColumnType.INTEGER)
 
         # then
-        self.assertEqual(len(table.columns), 2)
+        self.assertEqual(len(table.get_columns()), 2)
         # and
         name_column = table.get_column_at_index(0)
         self.assertEqual(name_column.name, "name")
