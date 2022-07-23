@@ -14,11 +14,13 @@ def less_than(left: Column, right: Any) -> 'Condition':
 
 
 class Where:
-    def __init__(self, condition: 'Condition'):
+    def __init__(self, condition: 'Condition' = None):
         self._condition: Condition = condition
 
-    def match(self, row: Row) -> bool:
-        return self._condition.match(row)
+    def matches(self, row: Row) -> bool:
+        if self._condition is not None:
+            return self._condition.matches(row)
+        return True
 
 
 class Condition(ABC):
@@ -40,13 +42,13 @@ class Condition(ABC):
         self._or = other
         return self
 
-    def match(self, row: Row) -> bool:
+    def matches(self, row: Row) -> bool:
         left_value = row.get_value(self._left_column)
         match_self = self._match(left_value, self._right_value)
         if self._and is not None:
-            return match_self and self._and.match(row)
+            return match_self and self._and.matches(row)
         elif self._or is not None:
-            return match_self or self._or.match(row)
+            return match_self or self._or.matches(row)
         else:
             return match_self
 

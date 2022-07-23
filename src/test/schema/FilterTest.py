@@ -17,7 +17,7 @@ class FilterTest(unittest.TestCase):
         where = Where(condition)
 
         # when
-        match = where.match(john)
+        match = where.matches(john)
 
         # then
         self.assertTrue(match)
@@ -32,7 +32,7 @@ class FilterTest(unittest.TestCase):
         where = Where(condition)
 
         # when
-        match = where.match(john)
+        match = where.matches(john)
 
         # then
         self.assertFalse(match)
@@ -47,7 +47,7 @@ class FilterTest(unittest.TestCase):
         where = Where(condition)
 
         # when
-        match = where.match(john)
+        match = where.matches(john)
 
         # then
         self.assertTrue(match)
@@ -62,7 +62,7 @@ class FilterTest(unittest.TestCase):
         where = Where(condition)
 
         # when
-        match = where.match(john)
+        match = where.matches(john)
 
         # then
         self.assertFalse(match)
@@ -77,7 +77,7 @@ class FilterTest(unittest.TestCase):
         where = Where(condition)
 
         # when
-        match = where.match(john)
+        match = where.matches(john)
 
         # then
         self.assertTrue(match)
@@ -92,7 +92,7 @@ class FilterTest(unittest.TestCase):
         where = Where(condition)
 
         # when
-        match = where.match(john)
+        match = where.matches(john)
 
         # then
         self.assertFalse(match)
@@ -107,7 +107,7 @@ class FilterTest(unittest.TestCase):
         where = Where(condition)
 
         # when
-        match = where.match(john)
+        match = where.matches(john)
 
         # then
         self.assertTrue(match)
@@ -122,7 +122,7 @@ class FilterTest(unittest.TestCase):
         where = Where(condition)
 
         # when
-        match = where.match(john)
+        match = where.matches(john)
 
         # then
         self.assertFalse(match)
@@ -138,9 +138,9 @@ class FilterTest(unittest.TestCase):
         where = Where(condition)
 
         # when
-        match_john = where.match(john)
+        match_john = where.matches(john)
         # and
-        match_kate = where.match(kate)
+        match_kate = where.matches(kate)
 
         # then
         self.assertFalse(match_john)
@@ -158,9 +158,9 @@ class FilterTest(unittest.TestCase):
         where = Where(condition)
 
         # when
-        match_john = where.match(john)
+        match_john = where.matches(john)
         # and
-        match_kate = where.match(kate)
+        match_kate = where.matches(kate)
 
         # then
         self.assertTrue(match_john)
@@ -178,9 +178,9 @@ class FilterTest(unittest.TestCase):
         where = Where(condition)
 
         # when
-        match_john = where.match(john)
+        match_john = where.matches(john)
         # and
-        match_kate = where.match(kate)
+        match_kate = where.matches(kate)
 
         # then
         self.assertTrue(match_john)
@@ -198,12 +198,31 @@ class FilterTest(unittest.TestCase):
         where = Where(condition)
 
         # when
-        match_john = where.match(john)
+        match_john = where.matches(john)
         # and
-        match_kate = where.match(kate)
+        match_kate = where.matches(kate)
 
         # then
         self.assertFalse(match_john)
+        # and
+        self.assertTrue(match_kate)
+
+    def test_empty_where(self):
+        # given
+        schema, name_column, age_column = create_columns_schema()
+        # and
+        john = young_john(schema)
+        kate = old_kate(schema)
+        # and
+        where = Where()
+
+        # when
+        match_john = where.matches(john)
+        # and
+        match_kate = where.matches(kate)
+
+        # then
+        self.assertTrue(match_john)
         # and
         self.assertTrue(match_kate)
 
