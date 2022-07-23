@@ -90,6 +90,22 @@ class InMemoryTableTest(unittest.TestCase):
         self.assertTrue(has_row_with_name(found, "John"))
         self.assertTrue(has_row_with_name(found, "Kate"))
 
+    def test_find_no_conditions_match(self):
+        # given
+        table, name_column, age_column = create_table_with_example_data()
+        # and
+        condition = less_than(age_column, 5)
+        where = Where(condition)
+
+        # when
+        found = table.find(where)
+
+        # then
+        self.assertEqual(len(found), 0)
+        # and
+        self.assertFalse(has_row_with_name(found, "John"))
+        self.assertFalse(has_row_with_name(found, "Kate"))
+
 
 def create_table_schema() -> TableSchema:
     table = TableSchema("employee")
