@@ -25,6 +25,13 @@ class Value:
             raise ValueError("Column is not a string")
         return str(self.bytes, "utf-8")
 
+    def get_value(self) -> Any:
+        match self.column_type:
+            case ColumnType.TEXT:
+                return self.as_string()
+            case ColumnType.INTEGER:
+                return self.as_int()
+
 
 def value_to_bytes(column_type: ColumnType, value: Any) -> bytes:
     match column_type:
@@ -38,10 +45,17 @@ def value_to_bytes(column_type: ColumnType, value: Any) -> bytes:
 
 class Row:
     def __init__(self, columns_schema: ColumnsSchema, values: dict[str, Any]):
+        self._column_schema: ColumnsSchema = columns_schema
         self._values: List[Value] = sorted(create_values_list(columns_schema, values), key=lambda v: v.column_index)
 
     def get_value(self, column: Column) -> Value:
         return self._values[column.index]
+
+    def get_as_dict(self) -> dict[str, Any]:
+        result: dict[str, Any] = {}
+        for column in self._column_schema.get_as_list():
+            result[column.name] = self.get_value(column).get_value()
+        return result
 
 
 def create_values_list(schema: ColumnsSchema, values: dict[str, Any]) -> List[Value]:

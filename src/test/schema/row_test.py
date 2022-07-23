@@ -40,6 +40,42 @@ class RowTest(unittest.TestCase):
         # and
         self.assertEqual(row.get_value(age_column).as_int(), -12)
 
+    def test_get_value_as_any_object(self):
+        # given
+        schema, name_column, age_column = create_columns_schema()
+        # and
+        values = {
+            "name": "John",
+            "age": 23
+        }
+
+        # when
+        row = Row(schema, values)
+
+        # then
+        self.assertEqual(row.get_value(name_column).get_value(), "John")
+        # and
+        self.assertEqual(row.get_value(age_column).get_value(), 23)
+
+    def test_get_values_as_dictionary(self):
+        # given
+        schema, name_column, age_column = create_columns_schema()
+        # and
+        values = {
+            "name": "John",
+            "age": 23
+        }
+
+        # when
+        row = Row(schema, values)
+
+        # then
+        expected_values = {
+            "age": 23,
+            "name": "John"
+        }
+        self.assertEqual(row.get_as_dict(), expected_values)
+
 
 def create_columns_schema() -> (ColumnsSchema, Column, Column):
     table = TableSchema("employee")
