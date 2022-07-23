@@ -26,5 +26,11 @@ class ColumnsSchema:
     def get_column_at_index(self, index: int) -> Column:
         return self._columns[index]
 
+    def get_column_by_name(self, name: str) -> Column:
+        for column in self._columns:
+            if column.name == name:
+                return column
+        raise ValueError("Column '" + name + "' not exist")
+
     def get_as_list(self) -> List[Column]:
         return self._columns

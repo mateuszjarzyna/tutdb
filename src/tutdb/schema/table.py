@@ -13,6 +13,3 @@ class TableSchema:
 
     def get_column_at_index(self, index: int) -> Column:
         return self.columns.get_column_at_index(index)
-
-    def get_columns(self) -> List[Column]:
-        return self.columns.get_as_list()
